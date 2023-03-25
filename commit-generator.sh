@@ -12,7 +12,7 @@ api_key=$OPENAI_API_KEY
 # Escape the diff for JSON
 escaped_diff=$(echo "$diff" | jq -sR)
 
-prompt_template='Please generate an imperative concise and informative commit message based on the following Git diff. - means that the line was removed, + means that it was added.  If there is no + or - at the start of the line, you should only use it as context, it has not been changed. The commit message should not end with a period:\n\n'
+prompt_template='Please generate an imperative concise and informative commit message based on the following Git diff. - means that the line was removed, + means that it was added.  If there is no + or - at the start of the line, you should only use the line as context, the line has not been changed. The commit message should not end with a period:\n\n'
 instruction='\n\nPlease provide a single-line commit message that briefly describes the changes made in this diff.'
 
 # Construct the JSON payload using jq
