@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Load the API key from the .env file
 source .env
