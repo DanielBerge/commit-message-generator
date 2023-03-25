@@ -29,7 +29,7 @@ response=$(curl -s https://api.openai.com/v1/chat/completions \
   -d "$payload")
 
 # Parse the response and extract the generated commit message
-commit_message=$(echo "$response" | jq -r '.choices[0].message.content' | tr -d '\n')
+commit_message=$(echo "$response" | jq -r '.choices[0].message.content' | tr -d '\n' | sed 's/\.$//')
 
 # Check if the commit message is empty or null
 if [ -z "$commit_message" ] || [ "$commit_message" = "null" ]; then
@@ -38,7 +38,7 @@ if [ -z "$commit_message" ] || [ "$commit_message" = "null" ]; then
 fi
 
 # Print the commit message
-echo "$commit_message" | sed 's/\.$//'
+echo "$commit_message"
 
 # Prompt the user to confirm the commit
 read -p "Commit these changes? [y/N] " confirm
