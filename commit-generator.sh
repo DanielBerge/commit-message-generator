@@ -5,6 +5,11 @@ source .env
 
 diff=$(git diff)
 
+if [ "$diff" = "" ]; then
+  echo "No changes detected. Exiting."
+  exit 0
+fi
+
 # Escape the diff for JSON
 escaped_diff=$(echo "$diff" | jq -sR)
 
