@@ -3,6 +3,8 @@
 # Load the API key from the .env file
 source .env
 
+diff=$(git diff)
+
 # Escape the diff for JSON
 escaped_diff=$(echo "$diff" | jq -sR)
 
