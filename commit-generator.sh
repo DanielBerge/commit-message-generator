@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-# Load the API key from the .env file
-source .env
-
 diff=$(git diff)
 
 if [ "$diff" = "" ]; then
@@ -17,7 +14,7 @@ escaped_diff=$(echo "$diff" | jq -sR)
 # Call the OpenAI API to generate a commit message
 api_key=$OPENAI_API_KEY
 
-prompt_template='Please generate an imperative concise and informative commit message based on the following Git diff. - means that the line was removed, + means that it was added.  If there is no + or - at the start of the line, you should only use the line as context, the line has not been changed:\n\n'
+prompt_template='Please generate an imperative concise and informative commit message based on the following Git diff. - means that the line was removed, + means that it was added. If there is no + or - at the start of the line, you should only use the line as context, the line has not been changed:\n\n'
 instruction='\n\nPlease provide a single-line commit message that briefly describes the changes made in this diff.'
 
 # Construct the JSON payload using jq

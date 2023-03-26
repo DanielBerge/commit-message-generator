@@ -21,7 +21,7 @@ sudo apt-get install jq curl
 brew install jq curl
 ```
 
-3. Create a `.env` file in the project root directory with your OpenAI API key:
+3. Set your OpenAI API key as an environment variable directly in your terminal:
 ```
-echo "export OPENAI_API_KEY=your_api_key_here" > .env
+export OPENAI_API_KEY=your_api_key_here
 ```
