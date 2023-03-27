@@ -14,8 +14,8 @@ escaped_diff=$(echo "$diff" | jq -sR)
 # Call the OpenAI API to generate a commit message
 api_key=$OPENAI_API_KEY
 
-prompt_template='Please generate an imperative concise and informative commit message based on the following Git diff. - means that the line was removed, + means that it was added. If there is no + or - at the start of the line, you should only use the line as context, the line has not been changed:\n\n'
-instruction='\n\nPlease provide a single-line commit message that briefly describes the changes made in this diff.'
+prompt_template="Rewrite the following Git diff into a concise and informative commit message within 75 characters preferably less, using the '-' to indicate removed lines and '+' for added lines. Use unchanged lines for context only:\n"
+instruction='\n\nProvide a short and concise imperative single-line commit message that briefly describes the changes made in this diff.'
 
 # Construct the JSON payload using jq
 payload=$(jq -n --arg prompt_template "$prompt_template" --arg diff "$escaped_diff" --arg instruction "$instruction" '{model: "gpt-3.5-turbo", messages: [{role: "user", content: ($prompt_template + $diff + $instruction)}] }')
