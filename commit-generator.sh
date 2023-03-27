@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "You are not in a Git repository."
+    exit 0
+fi
+
 diff=$(git diff)
 
 if [ "$diff" = "" ]; then
