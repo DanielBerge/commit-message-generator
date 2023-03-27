@@ -14,6 +14,11 @@ escaped_diff=$(echo "$diff" | jq -sR)
 # Call the OpenAI API to generate a commit message
 api_key=$OPENAI_API_KEY
 
+if [ -z "$api_key" ]; then
+  echo "Error: Missing OpenAI API key. Please set the OPENAI_API_KEY environment variable."
+  exit 1
+fi
+
 prompt_template="Rewrite the following Git diff into a concise and informative commit message within 75 characters preferably less, using the '-' to indicate removed lines and '+' for added lines. Use unchanged lines for context only:\n"
 instruction='\n\nProvide a short and concise imperative single-line commit message that briefly describes the changes made in this diff.'
 
