@@ -41,6 +41,8 @@ commit_message=$(echo "$response" | jq -r '.choices[0].message.content' | tr -d 
 # Check if the commit message is empty or null
 if [ -z "$commit_message" ] || [ "$commit_message" = "null" ]; then
   echo "Error: Failed to generate commit message."
+  echo "Response from API:"
+  echo "$response"
   exit 1
 fi
 
