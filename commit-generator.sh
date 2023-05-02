@@ -13,6 +13,26 @@ if [ "$diff" = "" ]; then
   exit 0
 fi
 
+# Set default model to GPT-3
+model="gpt-3.5-turbo"
+
+# Parse the arguments
+while getopts ":m:" opt; do
+  case $opt in
+    m)
+      model="$OPTARG"
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
 # Escape the diff for JSON
 escaped_diff=$(echo "$diff" | jq -sR)
 
@@ -28,7 +48,7 @@ prompt_template="Rewrite the following Git diff into a concise and informative c
 instruction='\n\nProvide a short and concise imperative single-line commit message that briefly describes the changes made in this diff.'
 
 # Construct the JSON payload using jq
-payload=$(jq -n --arg prompt_template "$prompt_template" --arg diff "$escaped_diff" --arg instruction "$instruction" '{model: "gpt-3.5-turbo", messages: [{role: "user", content: ($prompt_template + $diff + $instruction)}] }')
+payload=$(jq -n --arg prompt_template "$prompt_template" --arg diff "$escaped_diff" --arg instruction "$instruction" --arg model "$model" '{model: $model, messages: [{role: "user", content: ($prompt_template + $diff + $instruction)}] }')
 
 response=$(curl -s https://api.openai.com/v1/chat/completions \
   -H "Content-Type: application/json" \
